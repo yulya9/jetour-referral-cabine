@@ -86,7 +86,7 @@
         $$('.pop-item', pop).forEach(function (o) { o.setAttribute('aria-selected', o === it ? 'true' : 'false'); });
         var changed = label.textContent !== name;
         label.textContent = name; closePop(); btn.focus();
-        if (changed) { replayRows(); if (window.__countRating) window.__countRating(); }
+        if (changed) { replayRows(); if (window.__countRating) window.__countRating(); if (window.__wakeIn) window.__wakeIn(); }
       });
       pop.appendChild(it);
     });
@@ -222,6 +222,17 @@
   });
 
   /* ---------- scroll choreography: Lenis (smooth scroll) + GSAP ScrollTrigger (scrubbed timelines) ---------- */
+  /* ---------- wake bars: progress to 6th place, 35 of 65 ---------- */
+  var wake = $('#wake'), wakeBars = [], wakeBase = [], WN = 32, WREST = 12, WPEAK = 56, WEDGE = 0;
+  if (wake) {
+    WEDGE = Math.round(WN * (+wake.getAttribute('aria-valuenow')) / (+wake.getAttribute('aria-valuemax')));
+    for (var wi = 0; wi < WN; wi++) {
+      var wb = document.createElement('i'), wh = WREST + (WPEAK - WREST) * Math.exp(-Math.pow((wi - WEDGE) / 5, 2));
+      if (wi < WEDGE) wb.className = 'on';
+      wb.style.height = wh + 'px'; wake.appendChild(wb); wakeBars.push(wb); wakeBase.push(wh);
+    }
+  }
+
   if (!window.gsap || !window.ScrollTrigger || reduce) return;
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
@@ -295,7 +306,7 @@
     });
 
     // 4. rating rows and history items simply appear, one after another (time based, not scrubbed)
-    gsap.from('.rating-row', {
+    gsap.from('.own-card, .rating-row', {
       y: 32, opacity: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out', clearProps: 'opacity,transform',
       scrollTrigger: { trigger: '.rating-history', start: 'top 72%', toggleActions: 'play none none none' }
     });
@@ -303,6 +314,32 @@
       y: 32, opacity: 0, duration: 0.9, stagger: 0.1, delay: 0.25, ease: 'power3.out', clearProps: 'opacity,transform',
       scrollTrigger: { trigger: '.rating-history', start: 'top 72%', toggleActions: 'play none none none' }
     });
+
+    // wake bars: fill from the left when the rating comes into view, then follow the pointer
+    if (wake) {
+      var wakeReady = false;
+      var wakeIn = function () {
+        wakeReady = false;
+        wakeBars.forEach(function (b) { b.classList.remove('on'); });
+        gsap.set(wakeBars, { height: WREST });
+        wakeBars.forEach(function (b, i) {
+          gsap.to(b, { height: wakeBase[i], duration: 0.7, delay: 0.25 + i * 0.035, ease: 'power3.out',
+            onStart: function () { if (i < WEDGE) b.classList.add('on'); },
+            onComplete: function () { if (i === WN - 1) wakeReady = true; } });
+        });
+      };
+      window.__wakeIn = wakeIn;
+      wakeBars.forEach(function (b) { b.classList.remove('on'); });
+      gsap.set(wakeBars, { height: WREST });
+      ScrollTrigger.create({ trigger: '.rating-history', start: 'top 72%', once: true, onEnter: wakeIn });
+      var setters = wakeBars.map(function (b) { return gsap.quickTo(b, 'height', { duration: 0.45, ease: 'power3.out' }); });
+      wake.addEventListener('pointermove', function (e) {
+        if (!wakeReady) return;
+        var r = wake.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * WN - 0.5;
+        setters.forEach(function (set, i) { var d = (i - x) / 3; set(wakeBase[i] + (WPEAK - wakeBase[i]) * Math.exp(-d * d)); });
+      });
+      wake.addEventListener('pointerleave', function () { setters.forEach(function (set, i) { set(wakeBase[i]); }); });
+    }
 
     // 5. rating leaves like the hero: edges pull in as it scrolls away
     gsap.to(rating, {

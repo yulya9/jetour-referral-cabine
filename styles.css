@@ -304,9 +304,6 @@ img { display: block; max-width: none; }
 .stat-detail li { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; font-size: 14px; line-height: 1.3; }
 .stat-detail li span { color: var(--text-inverse-secondary); }
 .stat-detail li b { font-weight: 500; color: var(--text-inverse); }
-.stat-detail .detail-link { justify-content: flex-end; }
-.stat-detail .detail-link a { font-weight: 500; color: var(--text-inverse); background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .55s var(--ease); }
-.stat-detail .detail-link a:hover { background-size: 100% 1px; }
 
 .beat { height: 120vh; }
 

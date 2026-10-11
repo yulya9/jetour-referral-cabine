@@ -199,7 +199,7 @@
   window.addEventListener('resize', function () { histBar(); histState(); });
   window.addEventListener('load', function () { histBar(); histState(); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { histBar(); histState(); });
-  viewAll.addEventListener('click', function () { say('Полная история — отдельная страница (в макете не описана)'); });
+  viewAll.addEventListener('click', function () { say('Полная история откроется отдельной страницей'); });
   histState(); histBar();
 
   /* ---------- stat cards: open on tap / Enter (hover and focus are handled in CSS) ---------- */

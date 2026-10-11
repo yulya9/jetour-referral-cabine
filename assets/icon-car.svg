@@ -1,0 +1,7 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="IconCar">
+<path id="Vector" d="M5 19H4C2.89543 19 2 18.1046 2 17V16C2 14.5 3.4 13 5 13C5.54459 13 5.91154 13 6.17184 13C6.70227 13 7.21071 12.7893 7.58579 12.4142L11.4142 8.58579C11.7893 8.21071 12.298 8 12.8284 8H21C21.6295 8 22.2223 8.29639 22.6 8.8L24.6792 11.5723C24.8894 11.8525 25.1694 12.0726 25.4914 12.2106L27.2878 12.9805C28.0232 13.2957 28.5 14.0187 28.5 14.8188V17C28.5 18.1046 27.6046 19 26.5 19H25M11 19H20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M8.5 21C9.88071 21 11 19.8807 11 18.5C11 17.1193 9.88071 16 8.5 16C7.11929 16 6 17.1193 6 18.5C6 19.8807 7.11929 21 8.5 21Z" stroke="white" stroke-width="2"/>
+<path id="Vector_3" d="M22.5 21C23.8807 21 25 19.8807 25 18.5C25 17.1193 23.8807 16 22.5 16C21.1193 16 20 17.1193 20 18.5C20 19.8807 21.1193 21 22.5 21Z" stroke="white" stroke-width="2"/>
+</g>
+</svg>

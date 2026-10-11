@@ -251,7 +251,7 @@
     if (window.ResizeObserver) new ResizeObserver(fit).observe(hero);
   })();
 
-  /* ---------- hero photos: crossfade every 6 s, pause on hover or button, off with reduced motion ---------- */
+  /* ---------- hero photos: crossfade every 5 s, pause on hover or button, off with reduced motion ---------- */
   (function () {
     var slides = $$('[data-slide]'), media = $('.hero-media-inner');
     if (!media || slides.length < 2 || reduce) return;
@@ -266,7 +266,7 @@
     ctrl.appendChild(pb); hero.appendChild(ctrl);
     function go(i) { slides[cur].classList.remove('is-active'); dots[cur].removeAttribute('aria-current'); cur = i; slides[cur].classList.add('is-active'); dots[cur].setAttribute('aria-current', 'true'); }
     function stop() { clearInterval(timer); timer = null; }
-    function restart() { stop(); if (!paused) timer = setInterval(function () { go((cur + 1) % slides.length); }, 6000); }
+    function restart() { stop(); if (!paused) timer = setInterval(function () { go((cur + 1) % slides.length); }, 5000); }
     ctrl.addEventListener('pointerenter', stop); ctrl.addEventListener('pointerleave', restart);
     dots[0].setAttribute('aria-current', 'true'); restart();
   })();

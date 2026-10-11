@@ -223,7 +223,7 @@
 
   /* ---------- scroll choreography: Lenis (smooth scroll) + GSAP ScrollTrigger (scrubbed timelines) ---------- */
   /* ---------- wake bars: progress to 6th place, 35 of 65 ---------- */
-  var wake = $('#wake'), wakeBars = [], wakeBase = [], WN = 32, WREST = 12, WPEAK = 56, WEDGE = 0;
+  var wake = $('#wake'), wakeBars = [], wakeBase = [], WN = 32, WREST = 12, WPEAK = 48, WEDGE = 0;
   if (wake) {
     WEDGE = Math.round(WN * (+wake.getAttribute('aria-valuenow')) / (+wake.getAttribute('aria-valuemax')));
     for (var wi = 0; wi < WN; wi++) {

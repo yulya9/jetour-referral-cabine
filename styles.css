@@ -430,3 +430,9 @@ html, body { overflow-x: clip; }
   .right-group { gap: 24px; }
   .right-group .icons { gap: 16px; }
 }
+
+/* ---------- select: light chip with teal underline (Figma Select/Month) ---------- */
+.select { background: var(--bg-surface); border: 0; border-bottom: 2px solid var(--accent); }
+.select:hover { background: #fff; border-bottom-color: var(--accent-hover); }
+.select[aria-expanded="true"] { background: #fff; border-color: transparent; border-bottom-color: var(--accent-active); }
+.filter-label, .filter-label + .select { margin-left: 0; }

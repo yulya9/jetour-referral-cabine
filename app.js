@@ -50,6 +50,26 @@
   window.addEventListener('resize', function () { if (openPop) place(openPop.pop, openPop.anchor, openPop.align); });
   window.addEventListener('scroll', function () { if (openPop) place(openPop.pop, openPop.anchor, openPop.align); }, { passive: true });
 
+  /* sliding highlight shared by all items of a popup */
+  function attachHighlight(pop) {
+    var hl = document.createElement('span'); hl.className = 'pop-hl'; hl.setAttribute('aria-hidden', 'true');
+    pop.insertBefore(hl, pop.firstChild);
+    var items = $$('.pop-item', pop);
+    function move(it) {
+      var first = !hl.classList.contains('on');
+      if (first) hl.style.transition = 'none';
+      hl.style.height = it.offsetHeight + 'px'; hl.style.transform = 'translateY(' + it.offsetTop + 'px)';
+      if (first) { void hl.offsetWidth; hl.style.transition = ''; }
+      hl.classList.add('on');
+    }
+    items.forEach(function (it, i) {
+      it.style.setProperty('--i', Math.min(i, 10));
+      it.addEventListener('pointerenter', function () { move(it); });
+      it.addEventListener('focus', function () { move(it); });
+    });
+    pop.addEventListener('pointerleave', function () { hl.classList.remove('on'); });
+  }
+
   function listNav(pop, anchor) {
     pop.addEventListener('keydown', function (e) {
       var items = $$('.pop-item', pop), i = items.indexOf(document.activeElement);
@@ -90,7 +110,7 @@
       });
       pop.appendChild(it);
     });
-    document.body.appendChild(pop); listNav(pop, btn);
+    document.body.appendChild(pop); listNav(pop, btn); attachHighlight(pop);
     function toggle() {
       if (openPop && openPop.pop === pop) { closePop(); return; }
       showPop(pop, btn, 'left');
@@ -150,7 +170,7 @@
     if (navigator.share) { navigator.share({ title: 'JETOUR', url: REF }).catch(function () {}); }
     else { copyBtn.click(); say('Ссылка скопирована'); }
   });
-  sharePop.appendChild(other); document.body.appendChild(sharePop); listNav(sharePop, shareBtn);
+  sharePop.appendChild(other); document.body.appendChild(sharePop); listNav(sharePop, shareBtn); attachHighlight(sharePop);
   shareBtn.addEventListener('click', function () {
     if (openPop && openPop.pop === sharePop) { closePop(); return; }
     showPop(sharePop, shareBtn, 'right'); $('.pop-item', sharePop).focus({ preventScroll: true });

@@ -454,3 +454,20 @@ html, body { overflow-x: clip; }
 .rating-history { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: stretch; }
 .rating-panel { width: auto; grid-column: span 5; }
 .history-panel { grid-column: span 3; }
+
+
+/* ---------- selects and menus: popup grows out of the trigger, highlight slides between items ---------- */
+.pop { clip-path: inset(0 0 100% 0 round 8px); transform: translateY(-4px); transform-origin: 0 0; transition: clip-path .45s var(--ease), opacity .2s ease, transform .45s var(--ease); }
+.pop.is-open { clip-path: inset(-32px round 8px); transform: none; }
+.pop-hl { position: absolute; left: 8px; right: 8px; top: 0; height: 40px; border-radius: var(--r-sm); background: var(--bg-panel); opacity: 0; pointer-events: none; transition: transform .28s var(--ease), height .28s var(--ease), opacity .2s ease; }
+.pop-hl.on { opacity: 1; }
+.pop-item { position: relative; opacity: 0; transform: translateY(-4px); transition: opacity .25s ease, transform .4s var(--ease); }
+.pop.is-open .pop-item { opacity: 1; transform: none; transition-delay: calc(var(--i, 0) * 18ms + 60ms); }
+.pop-item:hover, .pop-item:focus-visible, .pop-item.is-active { background: none; }
+.pop-item[aria-selected="true"] .tick { color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .pop, .pop-item, .pop-hl { transition: none; } .pop { clip-path: none; } .pop-item { opacity: 1; transform: none; } .pop:not(.is-open) { opacity: 0; } }
+
+/* ---------- rating and history sit on the 8-column grid: 5 + 3 columns at any width ---------- */
+.rating-history { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: stretch; }
+.rating-panel { width: auto; grid-column: span 5; }
+.history-panel { grid-column: span 3; }

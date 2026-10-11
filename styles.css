@@ -489,3 +489,30 @@ html, body { overflow-x: clip; }
 .stat-card .stat-detail { left: 0; right: 0; bottom: 0; width: auto; transform: translateY(8px); }
 .stat-card:hover .stat-detail, .stat-card:focus-visible .stat-detail, .stat-card.is-open .stat-detail { transform: none; }
 @media (prefers-reduced-motion: reduce) { .stat-card::before, .stat-card .value { transition: none; } }
+
+
+/* ---------- hero fills the first screen; photos can crossfade ---------- */
+.hero { min-height: calc(100vh - 86px); min-height: calc(100svh - 86px); }
+.hero-content { margin-top: auto; }
+.hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s ease; }
+.hero-slide.is-active { opacity: 1; }
+.hero-ctrl { position: absolute; right: 56px; bottom: 40px; z-index: 3; display: flex; align-items: center; gap: 12px; }
+.hero-dot { width: 44px; height: 44px; display: grid; place-items: center; background: none; border: 0; cursor: pointer; }
+.hero-dot::before { content: ''; width: 24px; height: 2px; background: rgba(246, 244, 243, 0.4); transition: background-color .3s ease, width .4s var(--ease); }
+.hero-dot[aria-current="true"]::before { width: 40px; background: var(--text-inverse); }
+.hero-pause { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid rgba(246, 244, 243, 0.6); border-radius: var(--r-sm); background: none; color: var(--text-inverse); cursor: pointer; font-size: 14px; }
+@media (prefers-reduced-motion: reduce) { .hero-slide, .hero-slide.is-active { animation: none; transition: none; } }
+
+/* scroll performance: promote the scrubbed photo layers once, no always-running animation on them */
+.hero-media-inner { will-change: transform; backface-visibility: hidden; }
+.hero-slide { contain: layout paint; }
+.glow { will-change: opacity, transform; }
+
+/* photo box keeps the headlight glows glued to the car for any hero size (emulates object-fit: cover) */
+.hero-photo { position: absolute; left: 50%; top: 50%; width: 1584px; height: 672px; transform: translate(-50%, -50%); }
+.hero-photo .hero-bg { object-fit: fill; }
+.hero-content { margin-top: 0; }
+
+/* hero text block: centred vertically on the left third, the car keeps the right two thirds */
+.hero { justify-content: flex-start; }
+.hero-content { margin-top: auto; margin-bottom: auto; }

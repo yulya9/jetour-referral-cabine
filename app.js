@@ -242,6 +242,35 @@
   });
 
   /* ---------- scroll choreography: Lenis (smooth scroll) + GSAP ScrollTrigger (scrubbed timelines) ---------- */
+  /* size the photo box like object-fit: cover so the glows stay on the headlights */
+  (function () {
+    var hero = $('.hero'), box = $('.hero-photo');
+    if (!hero || !box) return;
+    function fit() { var w = hero.offsetWidth, h = hero.offsetHeight, s = Math.max(w / 1584, h / 672); box.style.width = 1584 * s + 'px'; box.style.height = 672 * s + 'px'; }
+    fit(); window.addEventListener('resize', fit); window.addEventListener('load', fit);
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(hero);
+  })();
+
+  /* ---------- hero photos: crossfade every 6 s, pause on hover or button, off with reduced motion ---------- */
+  (function () {
+    var slides = $$('[data-slide]'), media = $('.hero-media-inner');
+    if (!media || slides.length < 2 || reduce) return;
+    var hero = $('.hero'), cur = 0, timer = null, paused = false;
+    var ctrl = document.createElement('div'); ctrl.className = 'hero-ctrl'; ctrl.setAttribute('role', 'group'); ctrl.setAttribute('aria-label', 'Фото на первом экране');
+    var dots = slides.map(function (s, i) {
+      var d = document.createElement('button'); d.type = 'button'; d.className = 'hero-dot'; d.setAttribute('aria-label', 'Фото ' + (i + 1));
+      d.addEventListener('click', function () { go(i); restart(); }); ctrl.appendChild(d); return d;
+    });
+    var pb = document.createElement('button'); pb.type = 'button'; pb.className = 'hero-pause'; pb.setAttribute('aria-label', 'Остановить смену фото'); pb.textContent = 'II';
+    pb.addEventListener('click', function () { paused = !paused; pb.textContent = paused ? '▶' : 'II'; pb.setAttribute('aria-label', paused ? 'Запустить смену фото' : 'Остановить смену фото'); paused ? stop() : restart(); });
+    ctrl.appendChild(pb); hero.appendChild(ctrl);
+    function go(i) { slides[cur].classList.remove('is-active'); dots[cur].removeAttribute('aria-current'); cur = i; slides[cur].classList.add('is-active'); dots[cur].setAttribute('aria-current', 'true'); }
+    function stop() { clearInterval(timer); timer = null; }
+    function restart() { stop(); if (!paused) timer = setInterval(function () { go((cur + 1) % slides.length); }, 6000); }
+    ctrl.addEventListener('pointerenter', stop); ctrl.addEventListener('pointerleave', restart);
+    dots[0].setAttribute('aria-current', 'true'); restart();
+  })();
+
   /* ---------- wake bars: progress to 6th place, 35 of 65 ---------- */
   var wake = $('#wake'), wakeBars = [], wakeBase = [], WN = 32, WREST = 12, WPEAK = 48, WEDGE = 0;
   if (wake) {

@@ -471,3 +471,21 @@ html, body { overflow-x: clip; }
 .rating-history { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: stretch; }
 .rating-panel { width: auto; grid-column: span 5; }
 .history-panel { grid-column: span 3; }
+
+
+/* ---------- stats v2: editorial columns, no plates (Figma "Stats variant: editorial") ---------- */
+.stat-cards .stat-card { flex: 1 1 0; height: 272px; padding: 16px 0 0; gap: 8px; justify-content: flex-start; background: none; border-radius: 0; border-top: 1px solid var(--bg-card-inverse-raised); transition: none; }
+.stat-cards .stat-card:hover, .stat-cards .stat-card:focus-visible, .stat-cards .stat-card.is-open { flex-grow: 1; background: none; }
+.stat-card::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 2px; background: var(--teal-500); transform: scaleX(0); transform-origin: 0 50%; transition: transform .6s var(--ease); pointer-events: none; }
+.stat-card:hover::before, .stat-card:focus-visible::before, .stat-card.is-open::before { transform: scaleX(1); }
+.stat-card .caption { order: 1; }
+.stat-card .value-row { order: 2; }
+.stat-card .stat-detail { order: 3; }
+.stat-card .icon-holder { display: none; }
+.stat-card .value { font-size: 120px; line-height: 1.1; color: var(--text-inverse); transition: color .35s ease; }
+.stat-card:hover .value, .stat-card:focus-visible .value, .stat-card.is-open .value { color: var(--teal-500); }
+.stat-card:hover .caption, .stat-card:focus-visible .caption, .stat-card.is-open .caption,
+.stat-card:hover .stat-detail li span, .stat-card:focus-visible .stat-detail li span, .stat-card.is-open .stat-detail li span { color: var(--text-inverse-secondary); }
+.stat-card .stat-detail { left: 0; right: 0; bottom: 0; width: auto; transform: translateY(8px); }
+.stat-card:hover .stat-detail, .stat-card:focus-visible .stat-detail, .stat-card.is-open .stat-detail { transform: none; }
+@media (prefers-reduced-motion: reduce) { .stat-card::before, .stat-card .value { transition: none; } }

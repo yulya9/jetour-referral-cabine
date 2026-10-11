@@ -449,3 +449,8 @@ html, body { overflow-x: clip; }
 
 .download-btn img { transition: transform .5s var(--ease), filter .3s ease; }
 @media (prefers-reduced-motion: reduce) { .download-btn img { transition: none; } }
+
+/* ---------- rating and history sit on the 8-column grid: 5 + 3 columns at any width ---------- */
+.rating-history { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: stretch; }
+.rating-panel { width: auto; grid-column: span 5; }
+.history-panel { grid-column: span 3; }
